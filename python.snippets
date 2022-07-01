@@ -1,0 +1,213 @@
+snippet manifest "Manifest JSON"
+{
+	'name': '${1}',
+	'version': '${2:1.0}',
+	'description': '${3}',
+	'summary': '${4}',
+	'author': '${5}',
+	'website': '${6}',
+	'license': '${7:LGPL-3}',
+	'category': '${8}',
+	'depends': [
+		'${9}'
+	],
+	'data': [
+		'${10}'
+	],
+	'demo': [
+		'${11}'
+	],
+	'auto_install': ${12|False,True|},
+	'application': ${13|False,True|},
+	'assets': {
+		$0
+	}
+}
+endsnippet
+
+snippet imo "Import Odoo Model/Fields/API"
+from odoo import _, api, fields, models
+
+
+endsnippet
+
+snippet ime "Import Odoo Exceptions"
+from odoo.exceptions import ${1|ValidationError,RedirectWarning,AccessDenied,AccessError,CacheMiss,MissingError,UserError|}
+endsnippet
+
+snippet iml "Import Logging"
+import logging
+
+
+_logger = logging.getLogger(__name__)
+
+
+endsnippet
+
+snippet imf "Import From"
+from . import ${1:names}
+endsnippet
+
+snippet oomodel "Add model"
+class ${30:${20/([a-z]+)[\._]?/${1:/capitalize}/g}}(models.${40|Model,AbstractModel,TransientModel|}):
+	${10|_name,_inherit|} = '${20:model.technical.name}'
+	_description = '${50:${20/([a-z]+)([\._]?)/${1:/capitalize}${2:+ }/g}}'
+	
+endsnippet
+
+snippet oofchar "Char Field"
+${1:field_name} = fields.Char('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet ooftext "Text Field"
+${1:field_name} = fields.Text('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofhtml "Html Field"
+${1:field_name} = fields.Html('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofboolean "Boolean Field"
+${1:field_name} = fields.Boolean('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofinteger "Integer Field"
+${1:field_name} = fields.Integer('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet ooffloat "Float Field"
+${1:field_name} = fields.Float('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofselection "Selection Field"
+${1:field_name} = fields.Selection([
+	('${2:key}', '${3:value}')
+], string='${4:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofdate "Date Field"
+${1:field_name} = fields.Date('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofdatetime "Datetime Field"
+${1:field_name} = fields.Datetime('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofimage "Image Field"
+${1:field_name} = fields.Image('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}', max_width=${3}, max_height=${4})${0}
+endsnippet
+
+snippet oofbinary "Binary Field"
+${1:field_name} = fields.Binary('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofmonetary "Monetary Field"
+${1:field_name} = fields.Monetary('${2:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofmany2one "Many2one Field"
+${1:field_name}_id = fields.Many2one('${2:comodel_name}', string='${3:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofone2many "One2many Field"
+${1:field_name}_ids = fields.One2many('${2:comodel_name}', '${3:inverse_field_name}', string='${4:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofmany2many "Many2many Field"
+${1:field_name}_ids = fields.Many2many('${2:comodel_name}', string='${3:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')${0}
+endsnippet
+
+snippet oofcompute "Compute Field"
+${1:field_name} = fields.${2|Char,Text,Html,Boolean,Integer,Float,Date,Datetime,Binary,Monetary|}(compute='_compute_${1}', string='${3:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')
+
+@api.depends('${0}')
+def _compute_${1}(self):
+	pass
+endsnippet
+
+snippet oofcomputei "Compute Field with Inverse"
+${1:field_name} = fields.${2|Char,Text,Html,Boolean,Integer,Float,Date,Datetime,Binary|}(compute='_compute_${1}', inverse='_inverse_${1}', string='${3:${1/(.*?)_([a-zA-Z])/${1:/capitalize} ${2:/capitalize}/g}}')
+
+@api.depends('${0}')
+def _compute_${1}(self):
+	pass
+def _inverse_${1}(self):
+	pass
+endsnippet
+
+snippet oofonchange "Onchange Field"
+@api.onchange('${1}')
+def _onchange_${1}(self):
+	${0:pass}
+endsnippet
+
+snippet oofconstrains "Field Constrains"
+@api.constrains('${1:fieldname}')
+def _constrains_${1}(self):
+	${0:pass}
+endsnippet
+
+snippet oofconstrains "SQL Constraints"
+_sql_constraints = [
+	("${1:field_name}_${2|check,unique|}", "${2}(${1})", "${3:Error message}"),
+]
+endsnippet
+
+snippet ooone "Ensure One"
+self.ensure_one()
+endsnippet
+
+snippet oooverride "Override Method"
+def ${1:method_name}(self, ${2:vals}):
+	res = super().${1:method_name}(${2:vals})
+	${0}
+	return res
+endsnippet
+
+snippet oocreate "Create Method"
+@api.model_create_multi
+def create(self, ${2:vals}):
+	return super().create(${2:vals})
+endsnippet
+
+snippet oowrite "Write Method"
+def write(self, vals):
+	return super().write(vals)
+endsnippet
+
+snippet oounlink "Unlink Method"
+def unlink(self):
+	return super().unlink()
+endsnippet
+
+snippet related "Related Attribute"
+related='${1:field_name}'
+endsnippet
+
+snippet required "Required Attribute"
+required=${1|True,False|}
+endsnippet
+
+snippet readonly "Readonly Attribute"
+readonly=${1|True,False|}
+endsnippet
+
+snippet copy "Copy Attribute"
+copy=${1|True,False|}
+endsnippet
+
+snippet store "Store Attribute"
+store=${1|True,False|}
+endsnippet
+
+snippet digits "Digits Attribute"
+digits='${1}'
+endsnippet
+
+snippet help "Help Attribute"
+help='${1}'
+endsnippet
+
+snippet check_company "Check Company Attribute"
+check_company=True
+endsnippet
